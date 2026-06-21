@@ -1,0 +1,23 @@
+{
+  "name": "permit-scrapers",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "scrape:austin": "ts-node scraper/austin.ts",
+    "scrape:nashville": "ts-node scraper/nashville.ts",
+    "scrape:federal": "ts-node scraper/federal-awards.ts",
+    "test:austin": "node scraper/austin.test.js",
+    "test:nashville": "node scraper/nashville.test.js"
+  },
+  "dependencies": {
+    "playwright": "^1.45.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
