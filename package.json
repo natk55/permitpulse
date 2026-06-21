@@ -1,7 +1,6 @@
 {
   "name": "permit-scrapers",
   "version": "1.0.0",
-  "type": "module",
   "scripts": {
     "scrape:austin": "ts-node scraper/austin.ts",
     "scrape:nashville": "ts-node scraper/nashville.ts",
