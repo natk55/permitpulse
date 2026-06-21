@@ -119,11 +119,13 @@ function classifyTrade(permitType: string = '', description: string = '', perTy:
 // =============================================================================
 
 /**
- * ArcGIS date fields are stored as epoch milliseconds.
- * Convert a JS Date to the epoch ms string for WHERE clauses.
+ * ArcGIS date handling helpers
+ * Use TIMESTAMP 'YYYY-MM-DD HH:MM:SS' in the WHERE clause to avoid
+ * invalid-query errors when comparing date fields.
  */
-function toArcGisEpoch(date: Date): number {
-  return Math.floor(date.getTime());
+function toArcGisTimestamp(date: Date): string {
+  // Convert to UTC-like YYYY-MM-DD HH:MM:SS (no trailing Z)
+  return new Date(date).toISOString().split('.')[0].replace('T', ' ');
 }
 
 /** Convert ArcGIS epoch ms to ISO 8601 string */
@@ -265,16 +267,16 @@ export async function scrapeNashvillePermits(daysBack: number = 1): Promise<RawP
   const startDate = new Date();
   startDate.setDate(startDate.getDate() - daysBack);
 
-  const startEpoch = toArcGisEpoch(startDate);
+  const startTimestamp = toArcGisTimestamp(startDate);
 
-  console.error(`[NashvilleScraper] Querying from ${startDate.toISOString()} (epoch: ${startEpoch})`);
+  console.error(`[NashvilleScraper] Querying from ${startDate.toISOString()} (timestamp: ${startTimestamp})`);
 
   let offset = 0;
   let hasMore = true;
 
   while (hasMore) {
     const params = new URLSearchParams({
-      where: `${FIELD_MAP.filedDate} >= ${startEpoch}`,
+      where: `${FIELD_MAP.filedDate} >= TIMESTAMP '${startTimestamp}'`,
       outFields: Object.values(FIELD_MAP).join(','),
       returnGeometry: 'false',
       f: 'json',

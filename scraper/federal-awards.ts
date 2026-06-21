@@ -194,12 +194,13 @@ async function scrapeUsaSpending(startDate: string, endDate: string): Promise<Ra
   let hasMore = true;
 
   while (hasMore && page <= 50) {
-    const body = {
+      const body = {
       filters: {
         time_period: [{ start_date: startDate, end_date: endDate }],
         place_of_performance: POCI_STATES.map((s) => ({ country: 'USA', state: s })),
-        naics_codes: { require: [NAICS_CODES] },
-        award_type_codes: ['A', 'B', 'C', 'D', 'IDV_A', 'IDV_B', 'IDV_B_A', 'IDV_B_B', 'IDV_B_C', 'IDV_C', 'IDV_D', 'IDV_E'],
+        naics_codes: { require: NAICS_CODES },
+        // Use only contract award types in one group to satisfy USAspending SOQL validation.
+        award_type_codes: ['A', 'B', 'C', 'D'],
       },
       fields: [
         'Award ID',
