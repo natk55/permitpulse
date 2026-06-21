@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Build artifacts (compiled from .ts)
+scraper/*.js
+scraper/*.cjs
+
+# Environment variables (NEVER commit)
+.env
+.env.local
+*.token
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Logs
+*.log
